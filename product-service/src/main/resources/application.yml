@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+internal:
+  api:
+    configurations:
+      pricesService:
+        url: http://localhost:8081/api/prices?productId={productId}
+
+async:
+  auditLogExecutor:
+    corePoolSize: 2
+    maxPoolSize: 10
+    queueCapacity: 500
+    threadNamePrefix: AuditLog-

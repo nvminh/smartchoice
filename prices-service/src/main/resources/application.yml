@@ -1,0 +1,28 @@
+
+server:
+  port: 8081
+
+partner:
+  api:
+    configurations:
+      SHOPEE:
+        url: https://api.shopee.vn
+        username: shopee_user1
+        password: shopee_user1
+        refreshToken: 1234567
+      TIKI:
+        url: https://api.tiki.vn
+        username: tiki_user1
+        password: tiki_user1
+        refreshToken: 1234567
+      LAZADA:
+        url: https://api.lazada.vn
+        username: lazada_user1
+        password: lazada_user1
+        refreshToken: 1234567
+
+caches:
+  prices:
+    ttl:
+      seconds: 30
+    size: 1000
