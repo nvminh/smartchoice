@@ -1,34 +1,22 @@
 package com.smartchoice.product.service.impl;
 
-import com.smartchoice.product.entity.AuditLog;
-import com.smartchoice.product.entity.LogEvent;
-import com.smartchoice.product.repository.AuditLogRepository;
-import com.smartchoice.product.service.AuditLogService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.smartchoice.common.dto.AuditLogDto;
+import com.smartchoice.common.service.AuditLogService;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class AuditLogServiceImpl implements AuditLogService {
-    private static final Logger logger = LoggerFactory.getLogger(AuditLogServiceImpl.class);
-    private AuditLogRepository auditLogRepository;
+    private JmsTemplate jmsTemplate;
 
-    public AuditLogServiceImpl(AuditLogRepository auditLogRepository) {
-        this.auditLogRepository = auditLogRepository;
+    public AuditLogServiceImpl(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
     }
 
     @Override
     @Async("auditLogExecutor")
-    public void log(LogEvent event, String source, String log) {
-        logger.info("add an event log for auditing, event: {}, source {}", event, source);
-        auditLogRepository.save(new AuditLog(event, source, log));
-    }
-
-    @Override
-    public List<AuditLog> findTop() {
-        return auditLogRepository.findTop10ByEventOrderByTimestampDesc(LogEvent.CUSTOMER_SEARCH);
+    public void log(AuditLogDto logDto) {
+        jmsTemplate.convertAndSend("audit-logs", logDto);
     }
 }

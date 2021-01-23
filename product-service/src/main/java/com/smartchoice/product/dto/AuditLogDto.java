@@ -1,6 +1,6 @@
 package com.smartchoice.product.dto;
 
-import com.smartchoice.product.entity.LogEvent;
+import com.smartchoice.common.dto.LogEvent;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Timestamp;

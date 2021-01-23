@@ -1,11 +1,7 @@
 package com.smartchoice.product.rest;
 
-import com.smartchoice.common.dto.ProductAddDto;
-import com.smartchoice.common.dto.ProductDetailsDto;
-import com.smartchoice.common.dto.ProductDto;
-import com.smartchoice.common.dto.SearchDto;
-import com.smartchoice.product.entity.LogEvent;
-import com.smartchoice.product.service.AuditLogService;
+import com.smartchoice.common.dto.*;
+import com.smartchoice.common.service.AuditLogService;
 import com.smartchoice.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +26,7 @@ public class ProductController {
 
     @PostMapping("/search")
     public ResponseEntity<List<ProductDto>> search(@RequestBody SearchDto search, HttpServletRequest request) {
-        auditLogService.log(LogEvent.CUSTOMER_SEARCH, request.getRemoteHost(), search.toString());
+        auditLogService.log(new AuditLogDto(LogEvent.CUSTOMER_SEARCH, request.getRemoteHost(), search.toString()));
         return ResponseEntity.ok(productService.search(search));
     }
 
