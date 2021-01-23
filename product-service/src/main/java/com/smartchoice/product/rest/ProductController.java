@@ -30,12 +30,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.search(search));
     }
 
-    @PostMapping("/")
-    public ResponseEntity add(@RequestBody ProductAddDto product) {
-        productService.addProduct(product);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDetailsDto> getProductDetails(@PathVariable("productId") Long productId) {
         Optional<ProductDetailsDto> productDetailsDto = productService.getProductDetails(productId);

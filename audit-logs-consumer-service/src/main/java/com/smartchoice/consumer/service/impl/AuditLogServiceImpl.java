@@ -13,11 +13,10 @@ import org.springframework.stereotype.Service;
 public class AuditLogServiceImpl implements AuditLogService {
     private static final Logger logger = LoggerFactory.getLogger(AuditLogServiceImpl.class);
     private AuditLogRepository auditLogRepository;
-    private ModelMapper modelMapper;
 
-    public AuditLogServiceImpl(AuditLogRepository auditLogRepository, ModelMapper modelMapper) {
+
+    public AuditLogServiceImpl(AuditLogRepository auditLogRepository) {
         this.auditLogRepository = auditLogRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override

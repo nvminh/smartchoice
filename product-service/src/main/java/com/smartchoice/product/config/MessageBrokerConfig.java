@@ -22,7 +22,7 @@ public class MessageBrokerConfig {
     public BrokerService messageBroker() throws Exception {
         BrokerService broker = new BrokerService();
         // configure the broker
-        //broker.setBrokerName("fred");
+        //broker.setBrokerName("abc");
         broker.addConnector("tcp://localhost:61616");
         broker.start();
         return broker;
