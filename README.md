@@ -24,8 +24,6 @@ Change dir to audit-logs-consumer-service subfolder and run the following comman
 
 `mvn compile exec:java -Dspring.profiles.active=dev -Dexec.mainClass=com.smartchoice.consumer.AuditLogsConsumerApplication`
 
-# Project structure
-
 # Test samples
 
 Add products:
@@ -49,3 +47,51 @@ Get Prices (internal call from Product Service to Prices Service)
 Get Audit Logs 
 
 `curl -X GET "http://localhost:8082/api/logs" -H "accept: */*"`
+
+# Project Design
+
+## Package Structure
+
+<img src="Packages.png">
+
+* common module
+    * Contains common DTO classes, interfaces and utilities
+* prices-service module
+    * Contains source codes for building prices-service which can be packaged as a microserice.
+
+* product-service module
+    * Contains source codes for building product-service which can be packaged as a microserice.
+* audit-logs-consumer-service module
+    * Contains source codes for building audit-logs-consumer-service which can be packaged as a microserice.
+
+## Component Diagram
+
+<img src="Component%20Diagram.png">
+
+* Prices Service
+  * Collect product prices from partner sites (Tiki, Lazada, Shopee, ...). The current implementation is just simulating the prices using a random function. The real implementation will be based on the details of APIs which provided from partners.
+  * Expose REST APIs for getting prices from other internal services (product service).
+  * The collected prices can be cached in a cache server (Redis, ...). In dev environment, we can use in memory cache which is supported by Spring.
+    
+* Product Service
+  * Get product prices from Prices Service via REST calls.
+  * Expose REST APIs for searching products, getting product details (prices, images, ...)
+  * User actions can be stored for auditing, for not impacting users while storing the audit logs, instead of storing the logs directly to the db, the logs can be sent to a queue, other service will consume log messages the queue then write to database (This means we are applying publisher-subscriber design pattern to resolve the performance issue).
+  * In dev environment, the queue server can be run as embedded mode and started while starting the product service.
+    
+* Audit Logs Consumer Service
+  * Consume log messages from the queue server then write the messages to database.
+
+## Class Diagram
+
+<img src="Class%202%20Diagram.png">
+
+## ERD Diagram
+
+<img src="ERD%20Diagram.png">
+
+## Deployment Diagram
+
+<img src="Deployment%20Diagram.png">
+
+* The deployment is based on assuming that we will deploy the services on cloud. All the services are in a K8S Cluster. Each service is configured that can be scalable. 
