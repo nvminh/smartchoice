@@ -2,8 +2,11 @@ package com.smartchoice.product.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,7 +17,7 @@ public class Product {
     private Long id;
     @Column
     private String name;
-    @Column
-    private String images;
-
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    private Set<Content> contents;
 }

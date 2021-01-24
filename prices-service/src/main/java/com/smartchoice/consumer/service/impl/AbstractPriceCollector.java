@@ -11,6 +11,7 @@ import java.util.Random;
 
 public abstract class AbstractPriceCollector implements PriceCollector {
     private static final Logger logger = LoggerFactory.getLogger(AbstractPriceCollector.class);
+    private static Random random = new Random(1000);
 
     String partnerId;
     ApiConfiguration apiConfiguration;
@@ -23,7 +24,7 @@ public abstract class AbstractPriceCollector implements PriceCollector {
     public ProductPriceDto getPrice(Long productId) {
         ProductPriceDto priceDto = new ProductPriceDto();
         priceDto.setPartnerId(partnerId);
-        priceDto.setPrice(new Random(1000).nextFloat());
+        priceDto.setPrice(random.nextFloat());
         logger.info("Get price for product {} from {}", productId, partnerId);
         return priceDto;
     }

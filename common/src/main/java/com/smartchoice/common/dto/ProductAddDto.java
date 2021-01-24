@@ -3,9 +3,11 @@ package com.smartchoice.common.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class ProductAddDto {
     private String name;
-    private String images;
+    private List<String> images;
 }

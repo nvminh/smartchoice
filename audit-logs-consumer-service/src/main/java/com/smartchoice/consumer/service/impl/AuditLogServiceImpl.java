@@ -4,7 +4,6 @@ import com.smartchoice.common.dto.AuditLogDto;
 import com.smartchoice.common.service.AuditLogService;
 import com.smartchoice.consumer.entity.AuditLog;
 import com.smartchoice.consumer.repository.AuditLogRepository;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

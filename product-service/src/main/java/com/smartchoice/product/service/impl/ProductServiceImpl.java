@@ -1,10 +1,8 @@
 package com.smartchoice.product.service.impl;
 
-import com.smartchoice.common.dto.ProductAddDto;
-import com.smartchoice.common.dto.ProductDetailsDto;
-import com.smartchoice.common.dto.ProductDto;
-import com.smartchoice.common.dto.SearchDto;
+import com.smartchoice.common.dto.*;
 import com.smartchoice.common.service.PricesService;
+import com.smartchoice.product.entity.Content;
 import com.smartchoice.product.entity.Product;
 import com.smartchoice.product.repository.ProductRepository;
 import com.smartchoice.product.service.ProductService;
@@ -30,18 +28,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> search(SearchDto search) {
-        return productRepository.findByNameContains(search.getProductName()).stream().map(i -> modelMapper.map(i, ProductDto.class))
+        return productRepository.findByNameContainsIgnoreCase(search.getProductName()).stream().map(i -> modelMapper.map(i, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void addProduct(ProductAddDto product) {
-        productRepository.save(modelMapper.map(product, Product.class));
+        Product entity = productRepository.save(modelMapper.map(product, Product.class));
+        entity.setContents(product.getImages().stream().map(i->new Content(ContentType.IMAGE, i, entity)).collect(Collectors.toSet()));
+        productRepository.save(entity);
     }
 
     @Override
     public Optional<ProductDetailsDto> getProductDetails(Long productId) {
-        Optional<Product> product = productRepository.findById(productId);
+        Optional<Product> product = productRepository.loadDetailsById(productId);
         return product.isPresent() ? Optional.of(loadProductDetails(product.get())) : Optional.empty();
     }
 
@@ -49,7 +49,8 @@ public class ProductServiceImpl implements ProductService {
         ProductDetailsDto productDetailsDto = new ProductDetailsDto();
         productDetailsDto.setProduct(modelMapper.map(product, ProductDto.class));
         productDetailsDto.setPrices(pricesService.getPrices(product.getId()));
-        productDetailsDto.setImages(product.getImages());
+        productDetailsDto.setImages(product.getContents().stream().filter(i->i.getContentType() == ContentType.IMAGE)
+                .map(Content::getPath).collect(Collectors.toList()));
         return productDetailsDto;
     }
 }

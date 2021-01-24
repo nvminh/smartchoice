@@ -10,5 +10,5 @@ import java.util.List;
 public class ProductDetailsDto {
     private ProductDto product;
     private List<ProductPriceDto> prices;
-    private String images;
+    private List<String> images;
 }
