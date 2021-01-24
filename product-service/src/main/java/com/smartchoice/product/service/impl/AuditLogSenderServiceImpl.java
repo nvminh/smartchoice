@@ -7,10 +7,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuditLogServiceImpl implements AuditLogService {
+public class AuditLogSenderServiceImpl implements AuditLogService {
     private JmsTemplate jmsTemplate;
 
-    public AuditLogServiceImpl(JmsTemplate jmsTemplate) {
+    public AuditLogSenderServiceImpl(JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }
 

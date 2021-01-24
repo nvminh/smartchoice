@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuditLogServiceImpl implements AuditLogService {
-    private static final Logger logger = LoggerFactory.getLogger(AuditLogServiceImpl.class);
+public class AuditLogWriterServiceImpl implements AuditLogService {
+    private static final Logger logger = LoggerFactory.getLogger(AuditLogWriterServiceImpl.class);
     private AuditLogRepository auditLogRepository;
 
 
-    public AuditLogServiceImpl(AuditLogRepository auditLogRepository) {
+    public AuditLogWriterServiceImpl(AuditLogRepository auditLogRepository) {
         this.auditLogRepository = auditLogRepository;
     }
 
